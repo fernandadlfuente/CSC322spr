@@ -1,0 +1,43 @@
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
+
+// import Orbit controls
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
+
+// renderer
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize( window.innerWidth, window.innerHeight );
+document.body.appendChild( renderer.domElement);
+
+// camera
+var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 500 );
+camera.position.set( 0, 0, 100 );
+camera.lookAt( 10, 0, 0 );
+
+// scene
+var scene = new THREE.Scene();
+
+// material
+var material = new THREE.MeshBasicMaterial({ color: 0x9120ff, wireframe: true }); 
+// mesh so no color is filled in (no face) and wireframe: true to include
+
+
+//geometry
+var geometry = new THREE.TetrahedronGeometry(30); // you need this
+var line = new THREE.Line(geometry, material);
+var tetrahedron = new THREE.Mesh(geometry, material);
+
+// to move
+var animate= function()
+{
+requestAnimationFrame(animate);
+renderer.render( scene, camera);
+}
+
+scene.add(tetrahedron);
+renderer.render( scene, camera);
+
+var controls = new OrbitControls ( camera, renderer.domElement);
+
+
+animate();
+
