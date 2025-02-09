@@ -1,0 +1,84 @@
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
+// import Orbit controls
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
+
+
+var baseWidth = 55;
+var totalH = 555;
+var topWidth = 34;
+var pyramidH = 55;
+var rectangle = totalH - pyramidH;
+
+var fer = 1.0;
+var izzy = 0.4;
+
+var vale = new THREE.Vector3(1, 1, 1).normalize();
+
+var izzy = new THREE.Vector3(1, 1, 1).normalize();
+
+
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(45, window.innerWidth/ window.innerHeight, 1, 1000 );
+
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+var ambientLight = new THREE.AmbientLight(0x404040, 2);
+var directionalLight = new THREE.DirectionalLight(0xffffff);
+
+directionalLight.position.set(0, 20, 30).normalize();
+scene.add(ambientLight);
+scene.add(directionalLight);
+
+camera.position.set(0, -800, 500);
+camera.lookAt(0, 30, 80);
+
+
+var rectangleGeometry = new THREE.BoxGeometry(baseWidth, rectangle, baseWidth);
+
+
+var rectangleMaterials = [
+new THREE.MeshBasicMaterial({color: 0x86433422111}), // brown
+new THREE.MeshBasicMaterial({color: 0x043820222}),  // red
+new THREE.MeshBasicMaterial({color: 0x534222456}), // purple
+new THREE.MeshBasicMaterial({color: 0x64439434}), // green
+new THREE.MeshBasicMaterial({color: 0x777}),     // blue
+new THREE.MeshBasicMaterial({color: 0x23333333})// grey
+];
+
+var pyramidGeometry= new THREE.ConeGeometry(topWidth / 2, pyramidH, 4);
+var rectangleMesh = new THREE.Mesh(rectangleGeometry, rectangleMaterials);
+
+var pyramidMaterials = new THREE.MeshBasicMaterial({color: 0x80});
+
+var pyramidMesh = new THREE.Mesh(pyramidGeometry, pyramidMaterials);
+
+pyramidMesh.position.set(0, rectangle / 2 + pyramidH / 2, 0);
+
+scene.add(rectangleMesh);
+scene.add(pyramidMesh);
+
+rectangleMesh.rotation.x = Math.PI / 4;
+rectangleMesh.rotation.y = Math.PI / 4;
+pyramidMesh.rotation.x = Math.PI / 4;
+pyramidMesh.rotation.y = Math.PI / 4;
+
+//bui's example
+var controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; 
+controls.dampingFactor = 0.40;
+controls.screenSpacePanning = false;
+controls.minDistance = 900;
+controls.maxDistance = 500;
+
+var animate= function()
+{
+requestAnimationFrame(animate);
+renderer.render( scene, camera);
+}
+
+
+
+animate ();
+
