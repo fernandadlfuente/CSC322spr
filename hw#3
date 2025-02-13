@@ -1,0 +1,60 @@
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
+// import Orbitcontrols
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
+
+
+// renderer
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize( window.innerWidth, window.innerHeight );
+document.body.appendChild(renderer.domElement);
+
+// camera
+var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 500);
+camera.lookAt(0, 0, 0);
+camera.position.set(0,0, 100);
+
+var controls = new OrbitControls (camera, renderer.domElement);
+controls.enableDamp = true;
+controls.dampingFactor = 0.05;
+controls.screenspacepan = false;
+controls.minD = 25;
+controls.maxD = 100;
+
+var scene = new THREE.Scene();
+var circleMaterial = new THREE.LineBasicMaterial({ color : 0xff233332 });
+var circlePoints = [];
+var radius = 30;
+var segments = 100;
+
+for(let fer = 0; fer <= segments; ++fer) 
+{
+
+var x = -radius + (fer / segments) * (2 * radius);
+var y = radius * radius - x * x;
+
+if(y >= 0) 
+{
+
+var y = Math.sqrt(y);
+circlePoints.push(new THREE.Vector3(x, y, 0));
+circlePoints.push(new THREE.Vector3(x, -y, 0));
+
+  }
+
+}
+
+var circleGeometry = new THREE.BufferGeometry().setFromPoints(circlePoints);
+var circle = new THREE.Line(circleGeometry, circleMaterial);
+scene.add(circle);
+
+function animate() 
+{
+requestAnimationFrame(animate);
+controls.update();
+renderer.render(scene, camera);
+
+}
+
+animate();
+
+
